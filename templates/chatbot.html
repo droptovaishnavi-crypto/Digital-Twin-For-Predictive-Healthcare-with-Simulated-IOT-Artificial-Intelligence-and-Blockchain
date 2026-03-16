@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Chatbot</title>
+</head>
+<body>
+<h2>Digital Twin Health Bot</h2>
+<input type="text" id="userInput" placeholder="Type your message here">
+<button onclick="sendMessage()">Send</button>
+<div id="chat" style="margin-top:20px;"></div>
+
+<script>
+async function sendMessage() {
+    const input = document.getElementById("userInput").value;
+    if(!input) return;
+    const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input })
+    });
+    const data = await response.json();
+    const chatDiv = document.getElementById("chat");
+    chatDiv.innerHTML += "<p><b>You:</b> " + input + "</p>";
+    chatDiv.innerHTML += "<p><b>Bot:</b> " + data.reply + "</p>";
+    document.getElementById("userInput").value = "";
+}
+</script>
+</body>
+</html>
